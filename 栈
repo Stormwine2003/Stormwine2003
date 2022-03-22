@@ -1,0 +1,104 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define initsize 50
+#define addsize 10
+#define YES 1
+#define NO 0
+
+int ZHANDING = 0;
+int cishu = 1;//重新分配空间的次数，由于计算需要初始值为1
+
+typedef struct {
+
+	char member;
+
+}ElementType;
+
+typedef struct node {
+
+	ElementType data;
+
+	struct node* next;
+
+}LinkStack;
+
+LinkStack* InitStack(LinkStack* S)
+{
+	S = (LinkStack*)malloc(sizeof(LinkStack) * initsize);
+	if (!S)
+		return NO;
+	S = NULL;
+	return S;
+}
+
+LinkStack* InitStackNode(LinkStack* S,ElementType e)
+{
+	LinkStack NEW;
+	NEW.next = NULL;
+	NEW.data = e;
+	return S;
+}
+
+LinkStack* FindStation(LinkStack S,int station)
+{
+	int i = 0;
+	LinkStack* p = &S;
+	while(i++<ZHANDING&&p->next!=NULL)
+	{
+		p = p->next;
+	}
+	if (p->next == NULL && i < station)
+		return NO;
+	else
+		return p;
+}
+
+LinkStack* FindDing(LinkStack S)
+{
+	return FindStation(S, ZHANDING);
+}
+
+void Pop(LinkStack* S,LinkStack* Node)
+{
+	LinkStack* p = FindDing(*S);
+	p->next = Node;
+	if (!p->next)
+	{
+		S = (LinkStack*)realloc(S, sizeof(LinkStack) * (initsize + addsize * cishu));
+		cishu++;
+	}
+	p->next = Node;
+	ZHANDING
+}
+
+int IsEmpty()
+{
+	return ZHANDING = 0 ? YES : NO;
+}
+
+void GetElem(LinkStack S, ElementType* e,int station)
+{
+	LinkStack* p = FindStation(S,station);
+	*e = p->data;
+}
+
+void Push(LinkStack* S)
+{
+	LinkStack* p = S;
+	p = FindStation(*S,ZHANDING-1);
+	p->next = NULL;
+}
+
+void DestroyStack(LinkStack* S)
+{
+	int i;
+	LinkStack* p = S;
+	LinkStack* tmp;
+	for (i = ZHANDING; i >= 0; i--)
+	{
+		tmp = p;
+		p = p->next;
+		free(tmp);
+	}
+	ZHANDING = 0;
+}
