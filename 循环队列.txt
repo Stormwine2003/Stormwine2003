@@ -1,0 +1,71 @@
+#include<stdio.h>
+#define initsize 10
+#define TRUE 1
+#define FALSE 0
+typedef int ElementType;
+
+typedef struct{
+	ElementType a[initsize];
+	int tail;
+	int head;
+}Queue;
+
+void InitQueue(Queue* Q){
+	int i = 0;
+	while (i < initsize) {
+		Q->a[i] = i+1;
+		i++;
+	}
+	Q->head = 0;
+	Q->tail = 0;//最后一个元素后一个位置，由于队满所以为0
+}
+
+int length(Queue Q) {
+	return (Q.tail -1 - Q.head + initsize) % initsize;
+}
+
+int IsEmpty(Queue Q) {
+	return Q.head == Q.tail && !Q.a[Q.tail] ? TRUE : FALSE;
+}
+
+void PrintQueue(Queue Q) {
+	int i = 0;
+	while (i <= length(Q)) {
+		printf("%d ", Q.a[(Q.head + i)% initsize]);
+		i++;
+	}
+	printf("\n");
+}
+
+int IsFull(Queue Q) {
+	return Q.tail % initsize == Q.head && Q.a[(Q.tail+1) % initsize]!=0 ? TRUE : FALSE;
+}
+
+void PopHead(Queue* Q) {
+	if (!IsEmpty(*Q)) {
+		Q->a[(Q->head + initsize) % initsize] = 0;
+		Q->head = (Q->head + initsize + 1) % initsize;
+	}
+	else {
+		printf("消除发生错误\n");
+	}
+}
+
+void InsertTail(Queue* Q,int e) {
+	if (!IsFull(*Q)) {//由于数组表示，不能自由分配空间，故此处不能增加空间，如满则发生错误
+		Q->a[Q->tail] = e;
+		Q->tail = (Q->tail + initsize + 1) % initsize;
+	}
+	else
+		printf("插入发生错误\n");
+}
+
+void main() {
+	Queue Q;
+	InitQueue(&Q);
+	PrintQueue(Q);
+	PopHead(&Q);
+	PrintQueue(Q);
+	InsertTail(&Q, 666);
+	PrintQueue(Q);
+}
